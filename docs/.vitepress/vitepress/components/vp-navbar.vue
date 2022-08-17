@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
+import VPNavbarSearch from './navbar/vp-search.vue'
 </script>
 
 <template>
     <div class="content">
-        navb
+        <VPNavbarSearch />
     </div>
 </template>

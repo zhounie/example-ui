@@ -1,15 +1,17 @@
 import DefaultTheme from 'vitepress/theme'
-import VPApp, { NotFound } from '../vitepress/index'
+import VPApp, { NotFound, globals } from '../vitepress/index'
 
 import type { Theme } from 'vitepress'
 
 
 const config: Theme = {
     ...DefaultTheme,
-    Layout: VPApp,
+    // Layout: VPApp,
     NotFound,
-    enhanceApp() {
-
+    enhanceApp({ app }) {
+        globals.map(([name, cm]) => {
+            app.component(name, cm)
+        })
     }
 }
  

@@ -1,6 +1,18 @@
 import { defineConfig } from 'vitepress'
+import fs from 'fs'
+import path from 'path'
+import MarkdownIt from 'markdown-it'
+import MarkdownItContainer from 'markdown-it-container'
+import type Renderer from 'markdown-it/lib/renderer'
+import type Token from 'markdown-it/lib/token'
+
+interface ContainerOpts {
+    marker?: string | undefined;
+    validate?(params: string): boolean;
+    render?(tokens: Token[], index: number, options: any, env: any, self: Renderer): string;
+}
 export default defineConfig({
-    title: 'Hello World',
+    title: 'ExampleUI',
     description: '你好啊',
     lang: 'en-US',
 
@@ -8,6 +20,36 @@ export default defineConfig({
         
     ],
     markdown: {
+       config: (md: MarkdownIt) => {
+        md.use(MarkdownItContainer, 'demo', {
+            validate(params) {
+                return !!params.trim().match(/^demo\s*(.*)$/)
+            },
+            render(tokens, idx) {
+                var m = tokens[idx].info.trim().match(/^demo\s*(.*)$/)
+                if (tokens[idx].nesting === 1) {
+                    const description = Array.isArray(m) && m.length ? m[1] : ''
+                    const sourceFileToken = tokens[idx + 2]
+                    const sourceFile = sourceFileToken.children?.[0].content ?? ''
+                    console.log(sourceFileToken);
+                    debugger
+                    let source = fs.readFileSync(
+                        path.resolve('.', 'examples', `${sourceFile}.vue`),
+                        'utf-8'
+                    )
+                    
+
+                    return `<Demo
+                        :demo="demo"
+                        description="${description}"
+                        source="${source}"
+                    >`;
+                } else {
+                    return '</Demo>';
+                }
+            }
+        } as ContainerOpts)
+       } 
     },
     themeConfig: {
         logo: '/image/logo.svg',
@@ -47,6 +89,11 @@ export default defineConfig({
                     ]
                   }
             ]
-        }
+        },
+        algolia: {
+            appId: 'R2IYF7ETH7',
+            apiKey: '599cec31baffa4868cae4e79f180729b',
+            indexName: 'docsearch',
+          }
     }
 })
