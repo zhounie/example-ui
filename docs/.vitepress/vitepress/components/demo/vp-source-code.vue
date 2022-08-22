@@ -5,9 +5,6 @@
             required: true
         }
     }>()
-    console.log(props.source);
-    console.log(1111);
-    
 </script>
 
 <template>

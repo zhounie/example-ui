@@ -14,9 +14,9 @@
         console.log(props.demos);
         
         const demos = {}
-        Object.keys(props.demos).forEach(key => {
-            demos[key.replace('../../examples/', '').replace('.vue', '')] = props.demos[key].default
-        })
+        // Object.keys(props.demos).forEach(key => {
+        //     demos[key.replace('../../examples/', '').replace('.vue', '')] = props.demos[key].default
+        // })
         return demos
     })
 

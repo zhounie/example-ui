@@ -9,5 +9,5 @@ import VPDemo from './components/vp-demo.vue'
 export default VPApp
 
 export const globals: [string, Component][] = [
-    ['Demo', VPDemo]
+    // ['Demo', VPDemo]
 ]

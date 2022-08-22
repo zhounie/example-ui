@@ -1,0 +1,9 @@
+{
+  "name": "@example-ui/components",
+  "version": "1.0.0",
+  "description": "存储全部组件",
+  "main": "index.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

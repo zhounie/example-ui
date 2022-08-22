@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import MarkdownIt from 'markdown-it'
 import MarkdownItContainer from 'markdown-it-container'
+import { demoBlockPlugin } from 'vitepress-theme-demoblock'
 import type Renderer from 'markdown-it/lib/renderer'
 import type Token from 'markdown-it/lib/token'
 
@@ -21,34 +22,35 @@ export default defineConfig({
     ],
     markdown: {
        config: (md: MarkdownIt) => {
-        md.use(MarkdownItContainer, 'demo', {
-            validate(params) {
-                return !!params.trim().match(/^demo\s*(.*)$/)
-            },
-            render(tokens, idx) {
-                var m = tokens[idx].info.trim().match(/^demo\s*(.*)$/)
-                if (tokens[idx].nesting === 1) {
-                    const description = Array.isArray(m) && m.length ? m[1] : ''
-                    const sourceFileToken = tokens[idx + 2]
-                    const sourceFile = sourceFileToken.children?.[0].content ?? ''
-                    console.log(sourceFileToken);
-                    debugger
-                    let source = fs.readFileSync(
-                        path.resolve('.', 'examples', `${sourceFile}.vue`),
-                        'utf-8'
-                    )
+        // md.use(MarkdownItContainer, 'demo', {
+        //     validate(params) {
+        //         return !!params.trim().match(/^demo\s*(.*)$/)
+        //     },
+        //     render(tokens, idx) {
+        //         var m = tokens[idx].info.trim().match(/^demo\s*(.*)$/)
+        //         if (tokens[idx].nesting === 1) {
+        //             const description = Array.isArray(m) && m.length ? m[1] : ''
+        //             const sourceFileToken = tokens[idx + 2]
+        //             const sourceFile = sourceFileToken.children?.[0].content ?? ''
+        //             console.log(sourceFileToken);
+        //             debugger
+        //             let source = fs.readFileSync(
+        //                 path.resolve('.', 'examples', `${sourceFile}.vue`),
+        //                 'utf-8'
+        //             )
                     
 
-                    return `<Demo
-                        :demo="demo"
-                        description="${description}"
-                        source="${source}"
-                    >`;
-                } else {
-                    return '</Demo>';
-                }
-            }
-        } as ContainerOpts)
+        //             return `<Demo
+        //                 :demo="demo"
+        //                 description="${description}"
+        //                 source="${source}"
+        //             >`;
+        //         } else {
+        //             return '</Demo>';
+        //         }
+        //     }
+        // } as ContainerOpts)
+        md.use(demoBlockPlugin)
        } 
     },
     themeConfig: {
